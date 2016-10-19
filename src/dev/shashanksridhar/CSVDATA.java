@@ -1,4 +1,9 @@
 package dev.shashanksridhar;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+
 /***
  * A class to read/write numerical CSV Files and allow easy access
  * @author Shashank
@@ -7,8 +12,10 @@ package dev.shashanksridhar;
 public class CSVDATA {
 	private double[][] data;
 	private String[] columnNames;
+	private String filePathToCSV;
+	private int numRows;
 	
-	public CSVData(String filepath, String[] columnNames, int startRow) {
+	public CSVDATA(String filepath, String[] columnNames, int startRow) {
 		 this.filePathToCSV = filepath;
 
 		 String dataString = readFileAsString(filepath);
@@ -28,7 +35,7 @@ public class CSVDATA {
 		 String line = lines[startRow + i];
 		 String[] coords = line.split(",");
 		 for (int j = 0; j < numColumns; j++) {
-		 if (coords[j].endsWith("#")) coords[j] = coords[j].substring(0, coords[j].length()-1);
+		 if (coords[j].endsWith("\n")) coords[j] = coords[j].substring(0, coords[j].length()-1);
 		 double val = Double.parseDouble(coords[j]);
 		 data[i][j] = val;
 		 }
@@ -106,7 +113,7 @@ public class CSVDATA {
 	 * @return
 	 */
 	public double[][] getMultipleCols( int startCol, int endCol) {
-		double [][] outputArr = new double [][endCol - startCol];
+		double [][] outputArr = new double [endCol - startCol][data.length];
 		int colNum=0;
 		for (int i= startCol; i < endCol; i++) {
 			for (int j= 0; j < outputArr[0].length; j++) {
@@ -124,7 +131,7 @@ public class CSVDATA {
 	 */
 	public void setCol(int colIndex, double[] vals) {
 		for (int row = 0; row < data.length; row++) {
-				data[row][columnIndex] = vals[row];
+				data[row][colIndex] = vals[row];
 				
 			
 		}
